@@ -21,43 +21,58 @@ def rescale_frame(frame, percent=75):
     dim = (width, height)
     return cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
 
+
 face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read("Trainer.yml")
+
 
 labels = {}
 with open ("labels.pickle", 'rb') as f:
     labels = pickle.load(f)
     labels = {v: k for k, v in labels.items()}
 
-cap = cv2.VideoCapture(0) #Captura webcam # 0 for webcam
-#how to connect > connect directly > mobile internet connection
+#Captura webcam # 0 for webcam
+
+#cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('http://192.168.100.7:8080/video')
+#cap = cv2.VideoCapture('http://100.122.68.184:8080/video') 
 
 make_480p()
 
 while True:
+    
     ret, frame = cap.read()         #Captura webcam  #Frame -> Imagem colorida
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    rescale_frame(frame, 50)
 
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)        #Reconhece rosto
     for (x,y,w,h) in faces:
-        print(x,y,w,h)
+        #print(x,y,w,h)
         roi_gray = gray[y:y+h,x:x+h] #Region of intrest - Rosto preto e branco
         roi_color = frame[y:y+h,x:x+h] #Region of intrest - Rosto colorido
 
         id_, conf = recognizer.predict(roi_gray)  #Label , confidence
-        print("conf: {}".format(conf))
+        print("conf:{}, label:{}".format(round(conf,3),labels[id_])) 
+        #conf = 0 -> 100% confiança
+        #conf = 100 -> 0% confiança
         if conf <= 30:
-            print(labels[id_], conf)
+            #propriedades retangulo
             font = cv2.FONT_HERSHEY_SIMPLEX
-            name = labels[id_]
             color = (255,255, 255)
             stroke = 2
+            
+            name = labels[id_]
             cv2.putText(frame, name, (x,y), font, 1, color, stroke ,cv2.LINE_AA)
 
-        img_item = "my-image.png"
-        cv2.imwrite(img_item, roi_gray)
+        else:
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            color = (255,255, 255)
+            stroke = 2
+            name = 'unkown'
+            cv2.putText(frame, name, (x,y), font, 1, color, stroke ,cv2.LINE_AA)
+
+        #img_item = "my-image.png"
+        #cv2.imwrite(img_item, roi_gray)
 
         color = (255, 0, 0) #BGR 0-255
         stroke = 2

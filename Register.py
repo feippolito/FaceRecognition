@@ -16,11 +16,11 @@ while i==0:
         name = input()
         path  = './images/' + name
         i = createFolder(path)
-        print(i)
 
 face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_default.xml')
 
-cap = cv2.VideoCapture(0) #Captura webcam # 0 for webcam
+#cap = cv2.VideoCapture(0) #Captura webcam # 0 for webcam
+cap = cv2.VideoCapture('http://192.168.100.7:8080/video')
 #how to connect > connect directly > mobile internet connection
 j=1
 
