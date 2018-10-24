@@ -47,8 +47,8 @@ while True:
         roi_color = frame[y:y+h,x:x+h] #Region of intrest - Rosto colorido
 
         id_, conf = recognizer.predict(roi_gray)  #Label , confidence
-
-        if 30 <= conf <= 85:
+        print("conf: {}".format(conf))
+        if conf <= 30:
             print(labels[id_], conf)
             font = cv2.FONT_HERSHEY_SIMPLEX
             name = labels[id_]
