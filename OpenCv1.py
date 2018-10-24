@@ -21,7 +21,7 @@ def rescale_frame(frame, percent=75):
     dim = (width, height)
     return cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
 
-face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt.xml')
+face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_default.xml')
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read("Trainer.yml")
 
@@ -40,9 +40,9 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     rescale_frame(frame, 50)
 
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)        #Reconhece a posição do rosto
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=5)        #Reconhece rosto
     for (x,y,w,h) in faces:
-        #print(x,y,w,h)
+        print(x,y,w,h)
         roi_gray = gray[y:y+h,x:x+h] #Region of intrest - Rosto preto e branco
         roi_color = frame[y:y+h,x:x+h] #Region of intrest - Rosto colorido
 

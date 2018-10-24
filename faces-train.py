@@ -10,7 +10,7 @@ image_dir = os.path.join(BASE_DIR, "images")
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 
 
-face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt_tree.xml')  # Reconhece rosto de frente
+face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_default.xml')  # Reconhece rosto de frente
 
 current_id = 0
 label_ids = {}
@@ -32,7 +32,7 @@ for root, dirs, files in os.walk(image_dir):
             #print(label_ids)
 
             pil_image = Image.open(path).convert("L")  # preto e branco
-            size = (5000, 5000)
+            size = (500, 500)
             final_image = pil_image.resize(size, Image.ANTIALIAS)
 
             image_array = np.array(pil_image, "uint8")
@@ -52,5 +52,4 @@ with open("labels.pickle", 'wb') as f:
     pickle.dump(label_ids, f)
 
 recognizer.train(x_train, np.array(y_labels))
-print(x_train)
 recognizer.save("Trainer.yml")
