@@ -1,20 +1,6 @@
 import cv2
 import pickle
 
-face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt.xml')
-recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read("Trainer.yml")
-
-labels = {}
-with open ("labels.pickle", 'rb') as f:
-    labels = pickle.load(f)
-
-    labels = {v: k for k, v in labels.items()}
-
-#cap = cv2.VideoCapture('http://10.0.11.141:8080/video')       #Captura webcam # 0 for webcam
-cap = cv2.VideoCapture(0)
-#http://10.33.110.10:8080/video
-
 #Mudar  resolução
 def make_1080p():
     cap.set(3,1920)
@@ -35,7 +21,19 @@ def rescale_frame(frame, percent=75):
     dim = (width, height)
     return cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
 
+face_cascade = cv2.CascadeClassifier('cascades/data/haarcascade_frontalface_alt.xml')
+recognizer = cv2.face.LBPHFaceRecognizer_create()
+recognizer.read("Trainer.yml")
 
+labels = {}
+with open ("labels.pickle", 'rb') as f:
+    labels = pickle.load(f)
+    labels = {v: k for k, v in labels.items()}
+
+cap = cv2.VideoCapture(0) #Captura webcam # 0 for webcam
+#how to connect > connect directly > mobile internet connection
+
+make_480p()
 
 while True:
     ret, frame = cap.read()         #Captura webcam  #Frame -> Imagem colorida
