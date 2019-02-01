@@ -3,14 +3,13 @@
 #### 1. Execute [Register.py](https://github.com/feippolito/FaceRecognition/blob/master/Register.py) to take pictures to register faces.
  
 
-to use computer native webcam make sure the code is:
+To use computer native webcam make sure the code is:
 
 ```python
 cap = cv2.VideoCapture(0)
 ```
 
-its also possible to use an phone camera to register:
-insert the adress as parameter
+Its also possible to use an phone camera to register, insert ip camera adress as parameter
 
 ```python
 cap = cv2.VideoCapture('http://192.168.100.7:8080/video')
